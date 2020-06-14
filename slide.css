@@ -1,0 +1,5 @@
+.slide-toggle::before,
+.slide-toggle::after {
+  content: "";
+  display: table;
+}
