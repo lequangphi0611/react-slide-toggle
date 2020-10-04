@@ -15,14 +15,16 @@ const DragElement = ({ id, name }) => {
 };
 
 const DropElement = ({ children }) => {
-  const [{ dropResult }, dropRef] = useDrop({
+  const [{ dropResult, item, t }, dropRef] = useDrop({
     accept: "FOLDER",
     collect: spec => ({
-      dropResult: spec.getDropResult()
+      dropResult: spec.getDropResult(),
+      item: spec.getItem(),
+      t: spec.didDrop(),
     })
   });
   const result = dropResult;
-  console.log(result);
+  console.log({ result, item, t });
   return <div ref={dropRef}>{children}</div>;
 };
 const App = () => {
