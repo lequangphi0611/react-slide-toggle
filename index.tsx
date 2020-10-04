@@ -1,36 +1,37 @@
-import React, { Component, Fragment, useState, useCallback } from "react";
+import React from "react";
 import { render } from "react-dom";
+import { useDrag, useDrop, DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import "./style.css";
-import SlideToggleContent from './SlideToggle';
 
+const DragElement = ({ id, name }) => {
+  const [, dragRef] = useDrag({
+    item: {
+      type: "FOLDER",
+      name
+    }
+  });
+  return <div ref={dragRef}>{name}</div>;
+};
 
+const DropElement = ({ children }) => {
+  const [{ dropResult }, dropRef] = useDrop({
+    accept: "FOLDER",
+    collect: spec => ({
+      dropResult: spec.getDropResult()
+    })
+  });
+  const result = dropResult;
+  console.log(result);
+  return <div ref={dropRef}>{children}</div>;
+};
 const App = () => {
-  const [visible, setVisible] = useState(false);
-  const handleToggleClick = useCallback(() => {
-    setVisible(!visible);
-  }, [visible]);
   return (
-    <Fragment>
-      <button onClick={handleToggleClick}>toggle</button>
-      <SlideToggleContent isVisible={visible}>
-        <div>
-        <p>Start editing to see some magic happen :)</p>
-        <p>Start editing to see some magic happen :)</p>
-        <p>Start editing to see some magic happen :)</p>
-        <p>Start editing to see some magic happen :)</p>
-        <p>Start editing to see some magic happen :)</p>
-        <p>Start editing to see some magic happen :)</p>
-      </div>
-      </SlideToggleContent>
-  <div>
-        <p>Start editing to see some magic happen :)</p>
-        <p>Start editing to see some magic happen :)</p>
-        <p>Start editing to see some magic happen :)</p>
-        <p>Start editing to see some magic happen :)</p>
-        <p>Start editing to see some magic happen :)</p>
-        <p>Start editing to see some magic happen :)</p>
-      </div>  
-      </Fragment>
+    <DndProvider backend={HTML5Backend}>
+      <DragElement id="root" name="root" />
+      <DragElement id="children" name="children" />
+      <DropElement>Drop here</DropElement>
+    </DndProvider>
   );
 };
 
