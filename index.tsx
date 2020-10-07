@@ -9,7 +9,8 @@ const DragElement = ({ id, name }) => {
     item: {
       type: "FOLDER",
       name,
-      another: 'another'
+      another: 'another',
+      id
     }
   });
 
