@@ -9,23 +9,27 @@ const DragElement = ({ id, name }) => {
     item: {
       type: "FOLDER",
       name,
-      another: 'another',
+      another: "another",
       id
     }
   });
 
   const [, dropRef] = useDrop({
     accept: "FOLDER",
-    collect: spec => ({
-      dropResult: spec.getDropResult(),
-      item: spec.getItem(),
-      t: spec.didDrop(),
-    })
+    drop: spec => {
+      console.log("drop", spec);
+    }
   });
-  return <div ref={(instance) => {
-    dragRef(instance);
-    dropRef(instance);
-  }}>{name}</div>;
+  return (
+    <div
+      ref={instance => {
+        dragRef(instance);
+        dropRef(instance);
+      }}
+    >
+      {name}
+    </div>
+  );
 };
 
 const DropElement = ({ children }) => {
@@ -34,7 +38,7 @@ const DropElement = ({ children }) => {
     collect: spec => ({
       dropResult: spec.getDropResult(),
       item: spec.getItem(),
-      t: spec.didDrop(),
+      t: spec.didDrop()
     })
   });
   const result = dropResult;
