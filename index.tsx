@@ -18,6 +18,10 @@ const DragElement = ({ id, name }) => {
     accept: "FOLDER",
     drop: spec => {
       console.log("drop", spec);
+    },
+    canDrop: (item, monitor) => {
+      console.log(item, monitor);
+      return item.type === "FOLDER";
     }
   });
   return (
