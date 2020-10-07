@@ -15,13 +15,13 @@ const DragElement = ({ id, name }) => {
   });
 
   const [, dropRef] = useDrop({
-    accept: "FOLDER",
+    accept: ["FOLDER", "ANOTHER_FOLDER"],
     drop: spec => {
       console.log("drop", spec);
     },
     canDrop: (item, monitor) => {
       console.log(item, monitor);
-      return item.type === "FOLDER";
+      return true;
     }
   });
   return (
@@ -34,6 +34,32 @@ const DragElement = ({ id, name }) => {
       {name}
     </div>
   );
+};
+
+const AnotherElement = ({ id, name }) => {
+  const [, dragRef] = useDrag({
+    item: {
+      type: "ANOTHER_FOLDER",
+      name,
+      another: "another",
+      id
+    }
+  });
+
+  return <div ref={dragRef}>another-element</div>;
+};
+
+const NotAcceptElement = ({ id, name }) => {
+  const [, dragRef] = useDrag({
+    item: {
+      type: "NOT_ACCESS",
+      name,
+      another: "another",
+      id
+    }
+  });
+
+  return <div ref={dragRef}>not-access-element</div>;
 };
 
 const DropElement = ({ children }) => {
@@ -51,6 +77,8 @@ const DropElement = ({ children }) => {
 const App = () => {
   return (
     <DndProvider backend={HTML5Backend}>
+      <AnotherElement id="another" name="another" />
+      <NotAcceptElement id="not-access" name="not-access" />
       <DragElement id="root" name="root" />
       <DragElement id="children" name="children" />
       <DropElement>Drop here</DropElement>
